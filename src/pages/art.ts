@@ -170,6 +170,10 @@ export function spreadPage(
         text.style.setProperty('--copy-h', `${c[3] * 100}%`);
       }
       right.append(text);
+      // Print a still now (and again once the engravings have loaded), so the picture is
+      // already there on the leaf as the page turns in, not blank until it lands.
+      requestAnimationFrame(() => scene?.prime());
+      setTimeout(() => scene?.prime(), 700);
     },
     onEnter: () => scene?.enter(),
     onLeave: () => scene?.leave(),

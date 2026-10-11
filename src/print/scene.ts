@@ -57,6 +57,8 @@ export interface SpreadScene {
   frame: () => PrintFrame;
   enter(): void;
   leave(): void;
+  /** Print one still frame now, so the page already has its picture while it turns into view. */
+  prime(): void;
   /** Release the press's WebGL context (when the page is unmounted). */
   dispose(): void;
 }
@@ -231,6 +233,9 @@ export function printScene(o: PrintSceneOptions): SpreadScene {
       right.parentElement?.removeEventListener('click', onClick);
       pointer.inside = false;
       o.leave?.();
+    },
+    prime() {
+      if (!raf) render();
     },
     dispose() {
       press.dispose();
