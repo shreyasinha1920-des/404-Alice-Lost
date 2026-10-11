@@ -97,6 +97,7 @@ export class Press {
   h = 0;
   private scale = 1;
   private clearMask: HTMLCanvasElement | null = null;
+  private washCanvas: HTMLCanvasElement | null = null;
   private clearKey = '';
   private plates: Record<Ink, Plate>;
   private gl: WebGLRenderingContext | null;
@@ -189,6 +190,38 @@ export class Press {
       g.fill(path);
       g.globalAlpha = 1;
       g.globalCompositeOperation = 'source-over';
+    }
+  }
+
+  /**
+   * Fill a shape, but only where a raster mask is opaque: used for hand-colouring a figure,
+   * so the washes stay inside its outline instead of printing as boxes round it. The mask
+   * (an alpha canvas) is drawn at (x, y, w, h) in the current coordinates. Raises inks only.
+   */
+  fillWithin(path: Path2D, tones: Tones, mask: HTMLCanvasElement, x: number, y: number, w: number, h: number) {
+    for (const n of INK_NAMES) {
+      const t = tones[n];
+      if (t == null) continue;
+      const g = this.plates[n].g;
+      const tmp = (this.washCanvas ??= document.createElement('canvas'));
+      if (tmp.width !== g.canvas.width || tmp.height !== g.canvas.height) {
+        tmp.width = g.canvas.width;
+        tmp.height = g.canvas.height;
+      }
+      const tg = tmp.getContext('2d')!;
+      tg.setTransform(1, 0, 0, 1, 0, 0);
+      tg.globalCompositeOperation = 'source-over';
+      tg.clearRect(0, 0, tmp.width, tmp.height);
+      tg.setTransform(g.getTransform());
+      tg.fillStyle = typeof t === 'function' ? t(tg) : grey(t);
+      tg.fill(path);
+      tg.globalCompositeOperation = 'destination-in';
+      tg.drawImage(mask, x, y, w, h);
+      g.save();
+      g.setTransform(1, 0, 0, 1, 0, 0);
+      g.globalCompositeOperation = 'lighten';
+      g.drawImage(tmp, 0, 0);
+      g.restore();
     }
   }
 

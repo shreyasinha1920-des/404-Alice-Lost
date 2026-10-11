@@ -84,12 +84,34 @@ export function printFigure(press: Press, fig: PrintedFigure, height: number, bo
   const w = f.w * k;
   if (fade <= 0) return { w, h: height };
   press.figure(f, -w / 2, -height, height, { ...fig.ink, ...extraInk }, { fade });
-  // Washes: loose, wobbled shapes that drift a little on the boil, like hand colouring.
+  // Washes: loose, wobbled shapes that drift a little on the boil, like hand colouring,
+  // kept inside the figure's own outline.
+  const mask = alphaOf(fig.src, f);
   for (const [i, wash] of fig.washes.entries()) {
     const pts = wash.pts.map(([x, y]) => [(x - fig.offset[0]) * k - w / 2, (y - fig.offset[1]) * k - height] as Pt);
-    press.fill(curvy(wobble(pts, true, 2.2, i * 13 + (boil % 3), 6)), scaleTones(wash.tones, fade), { over: true });
+    press.fillWithin(curvy(wobble(pts, true, 2.2, i * 13 + (boil % 3), 6)), scaleTones(wash.tones, fade), mask, -w / 2, -height, w, height);
   }
   return { w, h: height };
+}
+
+/** A figure's shape as an alpha mask (opaque inside the figure), made once per figure. */
+const alphas = new Map<string, HTMLCanvasElement>();
+function alphaOf(src: string, f: Figure) {
+  const hit = alphas.get(src);
+  if (hit) return hit;
+  const sh = f.shape;
+  const read = sh.getContext('2d')!.getImageData(0, 0, sh.width, sh.height);
+  const d = read.data;
+  for (let i = 0; i < d.length; i += 4) {
+    d[i + 3] = d[i];
+    d[i] = d[i + 1] = d[i + 2] = 255;
+  }
+  const cv = document.createElement('canvas');
+  cv.width = sh.width;
+  cv.height = sh.height;
+  cv.getContext('2d')!.putImageData(read, 0, 0);
+  alphas.set(src, cv);
+  return cv;
 }
 
 const scaleTones = (t: Tones, k: number): Tones => {
@@ -265,8 +287,8 @@ export const ALICE_WOOD: PrintedFigure = {
 /** Plate 23: the Cheshire Cat on his bough; Alice looks up at him. */
 export const CHESHIRE_TREE: PrintedFigure = {
   src: '/illustrations/figures/cheshire-tree.png',
-  offset: [11, 26],
-  sourceH: 1193,
+  offset: [0, 0],
+  sourceH: 1251,
   ink: { a: 1, b: 0.8 },
   washes: [
     { pts: [[20, 40], [860, 40], [860, 500], [300, 520], [200, 640], [20, 640]], tones: LEAVES },
