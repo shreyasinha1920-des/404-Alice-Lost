@@ -88,6 +88,10 @@ export function bindInput(engine: BookEngine, surface: HTMLElement) {
   let dragged = false;
   surface.addEventListener('pointerdown', (e) => {
     if (e.pointerType === 'mouse' || !e.isPrimary) return;
+    // A gesture that starts on a picture belongs to the picture (brushing the willow, tracing
+    // the thread, painting a rose), not to turning the page. Scroll-driven pages are the
+    // exception: there, dragging anywhere is the fall.
+    if (!engine.isCapturing && startsOnPicture(e.target)) return;
     tracking = true;
     dragged = false;
     startX = e.clientX;
@@ -112,6 +116,12 @@ export function bindInput(engine: BookEngine, surface: HTMLElement) {
     dx < 0 ? engine.next() : engine.prev();
   });
   surface.addEventListener('pointercancel', () => (tracking = false));
+}
+
+/** On a printed illustration, but not on its words, links or buttons. */
+function startsOnPicture(target: EventTarget | null) {
+  if (!(target instanceof Element)) return false;
+  return !!target.closest('.page--art') && !target.closest('.text, a, button, input');
 }
 
 function isTyping(target: EventTarget | null) {

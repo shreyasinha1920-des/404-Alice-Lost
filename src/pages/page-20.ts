@@ -32,7 +32,6 @@ export default () =>
     (ctx) => {
       let born = 0;
       let blast = -9;
-      let frameRef: PrintFrame | null = null;
       const evidence = `Exhibit A: ${brokenPath(40)}`;
       preload(HERALD);
 
@@ -59,16 +58,11 @@ export default () =>
         layout() {},
         enter() {
           born = performance.now() / 1000;
-          setTimeout(() => {
-            const f = frameRef;
-            if (f) toot(f);
-          }, 500);
         },
         click(_x, _y, f) {
           toot(f);
         },
         draw(f) {
-          frameRef = f;
           const { press, w, h, t, boil } = f;
           const s = boil % 3;
           const since = ctx.reducedMotion ? 9 : performance.now() / 1000 - born;

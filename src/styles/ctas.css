@@ -599,3 +599,107 @@
 .illus__wind {
   pointer-events: none;
 }
+
+/* ---------- Phones: the words always fit ---------- */
+@media (max-width: 820px) {
+  /* The copy half scrolls if a page's words run long, and the page number stays at its foot. */
+  .spread:not(.spread--front) .page--right {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+  .spread:not(.spread--front) .page--right::-webkit-scrollbar {
+    display: none;
+  }
+  .spread:not(.spread--front) .page--right > .text {
+    flex: 1 0 auto;
+    height: auto;
+  }
+  .page--art .text--over {
+    padding: 4cqh 7cqw 2cqh;
+  }
+  .text {
+    padding: 5cqh 8cqw 3cqh;
+  }
+  .text .text__act {
+    margin-bottom: 0.8em;
+  }
+  .text .text__bridge {
+    margin-bottom: 0.8em;
+    font-size: max(12.5px, 3.3cqw);
+    line-height: 1.45;
+  }
+  .text .text__quote p {
+    font-size: max(18px, 5.6cqw);
+  }
+  .text .text__hint {
+    margin-top: 1em;
+  }
+  .text .door-row,
+  .text .ask,
+  .text .signs,
+  .text .pop-cta,
+  .text .move-down {
+    margin-top: 1.1em;
+  }
+  .folio--page,
+  .page--right:has(.text--designer) > .folio--page {
+    position: sticky;
+    bottom: 0;
+    left: auto;
+    right: auto;
+    z-index: 3;
+    flex: none;
+    margin-top: auto;
+    padding: 0.6em 0 0.8em;
+    text-align: center;
+    background: linear-gradient(to bottom, rgba(239, 228, 201, 0), var(--paper) 55%);
+  }
+  .page--art .folio--page {
+    background: linear-gradient(to bottom, rgba(239, 228, 201, 0), rgba(239, 228, 201, 0.92) 55%);
+  }
+  /* The signposts sit two to a row on a phone. */
+  .text .signs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6em 0.5em;
+    padding: 0;
+  }
+  .text .signs .sign,
+  .text .signs .sign--left {
+    align-self: stretch;
+    justify-content: center;
+    min-width: 0;
+    padding: 0.34em 1.2em 0.38em 0.7em;
+    font-size: max(11.5px, 3cqw);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    rotate: calc(var(--tilt, 0deg) * 0.35);
+    transform-origin: 50% 50%;
+  }
+  .text .signs .sign--left {
+    padding: 0.34em 0.7em 0.38em 1.2em;
+  }
+  .door__frame {
+    height: 17cqh;
+  }
+  .door-row {
+    gap: 3cqw;
+  }
+}
+
+/* On a touch screen, a drag on a picture is for the picture (the page never pans or turns). */
+@media (pointer: coarse) {
+  .spread .page--left.page--art {
+    touch-action: none;
+  }
+}
+@media (pointer: coarse) and (min-width: 821px) {
+  .spread .page--art {
+    touch-action: none;
+  }
+}

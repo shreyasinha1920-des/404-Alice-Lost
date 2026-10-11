@@ -210,7 +210,7 @@ export const story: StoryPage[] = [
     bridge: 'Then came the Queen, with her soldiers and courtiers and the royal children, all in a long procession.',
     quote: ['“Off with her head!”'],
     alt: 'The Queen of Hearts points and shouts, the King and the court behind her, while Alice stands her ground.',
-    interaction: 'The page flushes red, the text shakes, and 404 stamps across it like a royal seal.',
+    interaction: 'Tap and the page flushes red, the text shakes, and 404 stamps across it like a royal seal.',
     hint: 'Tap anywhere for the royal seal. She has plenty.',
   },
   {
@@ -229,7 +229,7 @@ export const story: StoryPage[] = [
     quote: ['“You’re nothing but a pack of cards!”'],
     alt: 'The whole pack of cards rises into the air and comes flying down upon Alice.',
     interaction: 'The cards burst into a storm across both pages, then settle into a deck.',
-    hint: 'Tap to throw the whole pack in the air again.',
+    hint: 'Tap to throw the whole pack in the air.',
   },
   {
     n: 22, act: 'The Court and Home',

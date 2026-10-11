@@ -12,9 +12,9 @@ import type { Press } from '../print/press';
 
 /**
  * Page 19: "Off with her head!" Tenniel's Queen of Hearts, in full cry, fills the left page
- * with her court. A moment after you arrive, the whole spread flushes red, the words shake,
- * and a royal seal in red wax slams down across the page: 404. Click anywhere and she
- * stamps another (she has plenty), and little hearts fly out of the book.
+ * with her court. Tap anywhere and the whole spread flushes red, the words shake, and a
+ * royal seal in red wax slams down where you tapped: 404. Tap again and she stamps another
+ * (she has plenty), and little hearts fly out of the book.
  */
 
 const COPY: [number, number, number, number] = [0.58, 0.06, 0.36, 0.42];
@@ -47,9 +47,6 @@ export default () => {
     (ctx) => {
       let seals: Seal[] = [];
       let flush = -9;
-      // When the first seal comes down, in the scene's own clock (set on the first frame after arriving).
-      let firstAt: number | null = null;
-      let arrived = false;
       preload(QUEEN);
 
       const slam = (f: PrintFrame, x: number, y: number) => {
@@ -74,12 +71,7 @@ export default () => {
         layout() {
           seals = [];
         },
-        enter() {
-          arrived = true;
-        },
         leave() {
-          arrived = false;
-          firstAt = null;
           seals = [];
         },
         click(x, y, f) {
@@ -87,12 +79,6 @@ export default () => {
         },
         draw(f) {
           const { press, w, h, t, boil } = f;
-          // She sees you, and the first seal comes down.
-          if (arrived && firstAt === null) firstAt = t + 1.3;
-          if (firstAt !== null && t >= firstAt && !seals.length) {
-            firstAt = Infinity;
-            slam(f, w * (f.wide ? 0.77 : 0.72), h * (f.wide ? 0.78 : 0.4));
-          }
           const s = boil % 3;
 
           // The croquet ground: pale lawn, a hedge wall.

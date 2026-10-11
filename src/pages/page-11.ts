@@ -14,8 +14,7 @@ import { puffStamp, shakeBook } from './act2';
 /**
  * Page 11: the White Rabbit's house, with Alice grown far too big for it. Tenniel's
  * vignette fills the left page: her enormous hand reaching out over the cucumber frame.
- * The book gives a gentle shake as you arrive, as if she'd just shifted inside it. On the
- * right, the chimney smokes. Click it and Bill the Lizard is kicked up it and clean out of
+ * On the right, the chimney smokes. Click it and Bill the Lizard is kicked up it and clean out of
  * the book; then, up out of the chimney, pops a sign to try another page.
  */
 
@@ -77,8 +76,6 @@ export default () => {
           smoke = [];
         },
         enter() {
-          // She shifts inside the house as you arrive.
-          timer = window.setTimeout(() => shakeBook(0.7, ctx.reducedMotion), 450);
           // If nobody finds the chimney, the sign comes up on its own.
           auto = window.setTimeout(() => popCta(ctx.reducedMotion), 9000);
         },

@@ -11,9 +11,9 @@ import type { Press, Tones } from '../print/press';
 /**
  * Page 21: "You're nothing but a pack of cards!" At that, the whole pack rises into the air
  * and comes flying down upon her. Tenniel's Alice shields herself on the left page; across
- * the spread a storm of printed cards whirls round and round, then settles, card by card,
- * into a neat deck on the right page. Click and they fly up again, and some fly clean out
- * of the book.
+ * the right page the pack sits in a neat deck. Tap and the cards rise in a storm that
+ * whirls round and round across the spread, then settles, card by card, back into the
+ * deck; some fly clean out of the book.
  */
 
 const COPY: [number, number, number, number] = [0.58, 0.05, 0.36, 0.42];
@@ -75,8 +75,6 @@ export default () =>
     (ctx) => {
       let cards: Card[] = [];
       let stormAt = -9;
-      // The storm begins as the page opens (on its first frame, in the scene's own clock).
-      let begin = true;
       preload(CARD_STORM);
 
       const deck = (f: PrintFrame) => (f.wide ? { x: f.w * 0.8, y: f.h * 0.84 } : { x: f.w * 0.78, y: f.h * 0.42 });
@@ -99,19 +97,12 @@ export default () =>
           const R = rng(211);
           cards = Array.from({ length: 26 }, (_, i) => ({ suit: SUITS[i % 4], orbit: 0.35 + R() * 0.65, phase: R() * Math.PI * 2, speed: 0.6 + R() * 0.8, tilt: (R() - 0.5) * 0.6, delay: i * 0.06 }));
         },
-        enter() {
-          begin = true;
-        },
         click(_x, _y, f) {
           storm(f, true);
         },
         draw(f) {
           const { press, w, h, t, boil } = f;
           const s = boil % 3;
-          if (begin) {
-            begin = false;
-            stormAt = t;
-          }
           const age = t - stormAt;
 
           // The courtroom in uproar: a pink wash, darkening at the floor.
