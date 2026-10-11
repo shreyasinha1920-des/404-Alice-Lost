@@ -1,0 +1,65 @@
+/* ---------- Spreads illustrated edge to edge, printed onto the page ---------- */
+
+.art {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.art__cv {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.page--art {
+  cursor: crosshair;
+}
+.page--art .ornament {
+  display: none;
+}
+/* The copy floats in the clearing the picture leaves for it. */
+.page--art .text--over {
+  position: absolute;
+  z-index: 1;
+  left: var(--copy-x, 12%);
+  top: var(--copy-y, 12%);
+  width: var(--copy-w, 76%);
+  /* Grows with its words (the wash behind follows), so nothing spills out onto the picture. */
+  height: auto;
+  max-height: none;
+  padding: 0;
+  justify-content: flex-start;
+  cursor: auto;
+}
+.page--art .text--over .folio {
+  display: none;
+}
+
+@media (max-width: 820px) {
+  /* Phones: the halves stack; each keeps its own part of the print. */
+  .spread .page.page--art {
+    position: relative;
+  }
+  .page--art .text--over {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    max-height: none;
+    padding: 5cqh 8cqw 6cqh;
+  }
+}
+
+/* The copy is never lost in the picture: a parchment wash sits behind all of it, solid
+   under every line (small print included), with only its outer edge blurred away, so it
+   melts into the clearing the print leaves instead of reading as a card laid on top. */
+.page--art .text--over::before {
+  content: '';
+  position: absolute;
+  inset: -1.1em -1.3em;
+  z-index: -1;
+  border-radius: 2.2em;
+  background: rgba(239, 228, 201, 0.93);
+  filter: blur(1.1em);
+  pointer-events: none;
+}

@@ -1,0 +1,63 @@
+/* ----- Act 2: Wrong Sizes ----- */
+
+
+/* Page 11: a sign on a stick, popped up out of the chimney. */
+.pop-cta {
+  position: relative;
+  align-self: flex-start;
+  margin: 1em 0 0 0.4em;
+  padding: 0 0 2.4em;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  rotate: -3deg;
+  transform-origin: 50% 100%;
+  font: inherit;
+}
+.pop-cta[hidden] {
+  display: none;
+}
+.pop-cta__sign {
+  position: relative;
+  z-index: 1;
+  display: block;
+  padding: 0.45em 1.5em 0.5em 1.1em;
+  font-family: var(--font-caps);
+  font-size: max(14px, 3.8cqw);
+  letter-spacing: 0.06em;
+  color: #fbf4e2;
+  /* a plank, cut into an arrow, printed pink over blue */
+  background:
+    repeating-linear-gradient(178deg, transparent 0 5px, rgba(0, 0, 0, 0.12) 5px 6px),
+    linear-gradient(#c23f7f, #9b2f66);
+  clip-path: polygon(0 8%, 86% 0, 100% 50%, 87% 100%, 2% 94%);
+  text-shadow: 1px 1px 0 rgba(38, 72, 196, 0.8);
+}
+/* the stick it's nailed to */
+.pop-cta__post {
+  position: absolute;
+  left: 38%;
+  top: 60%;
+  bottom: 0;
+  width: 7px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #6b4a2a, #8f6a3f 50%, #5a3c20);
+}
+.pop-cta:hover {
+  animation: pop-wiggle 0.5s ease-in-out;
+}
+.pop-cta:focus-visible {
+  outline: none;
+}
+.pop-cta:focus-visible .pop-cta__sign {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+@keyframes pop-wiggle {
+  25% { rotate: 3deg; }
+  50% { rotate: -6deg; }
+  75% { rotate: 1deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pop-cta:hover { animation: none; }
+}

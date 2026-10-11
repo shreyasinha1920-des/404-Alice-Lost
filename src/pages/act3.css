@@ -1,0 +1,136 @@
+/* ----- Act 3: The Woods ----- */
+
+/* Page 12: the Caterpillar asks where you were going. */
+.ask {
+  margin: 1.1em 0 0;
+}
+.ask__label {
+  display: block;
+  margin-bottom: 0.4em;
+  font-family: var(--font-caps);
+  font-size: max(13px, 3.3cqw);
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.ask__input {
+  width: 100%;
+  padding: 0.35em 0.1em 0.3em;
+  border: 0;
+  border-bottom: 1.5px dashed rgba(43, 33, 24, 0.55);
+  background: transparent;
+  font-family: var(--font-story);
+  font-style: italic;
+  font-size: max(15px, 3.8cqw);
+  color: var(--ink);
+  outline: none;
+}
+.ask__input:focus {
+  border-bottom-style: solid;
+  border-bottom-color: var(--accent);
+}
+.ask__input::placeholder {
+  color: rgba(43, 33, 24, 0.45);
+}
+.ask__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45em 0.55em;
+  margin: 0.7em 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ask__list a {
+  display: inline-block;
+  padding: 0.22em 0.75em 0.28em;
+  border: 1px solid rgba(43, 33, 24, 0.5);
+  border-radius: 22px 15px 20px 13px / 15px 20px 13px 22px;
+  font-family: var(--font-story);
+  font-size: max(13px, 3.3cqw);
+  color: var(--ink);
+  text-decoration: none;
+  background: rgba(239, 228, 201, 0.7);
+  transition: background 0.2s ease, color 0.2s ease, rotate 0.3s var(--ease-spring);
+}
+.ask__list a:hover,
+.ask__list a:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  rotate: -2deg;
+}
+.ask__none {
+  font-style: italic;
+  font-size: max(13px, 3.2cqw);
+  color: var(--ink-soft);
+}
+
+/* Page 13: signposts, every board a link. */
+.signs {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin: 1.2em 0 0;
+  padding: 0 0 0 0.4em;
+}
+.sign {
+  position: relative;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-width: 9.5em;
+  padding: 0.38em 1.6em 0.45em 1em;
+  font-family: var(--font-caps);
+  font-size: max(13px, 3.2cqw);
+  letter-spacing: 0.05em;
+  color: #fbf4e2;
+  text-decoration: none;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  rotate: var(--tilt, 0deg);
+  transform-origin: 0 50%;
+  transition: rotate 0.4s var(--ease-spring), translate 0.3s var(--ease-spring);
+}
+.sign--left {
+  align-self: flex-end;
+  padding: 0.38em 1em 0.45em 1.6em;
+  transform-origin: 100% 50%;
+}
+.sign:hover,
+.sign:focus-visible {
+  rotate: calc(var(--tilt, 0deg) * -1.6);
+  translate: 4px 0;
+  outline: none;
+}
+.sign--left:hover,
+.sign--left:focus-visible {
+  translate: -4px 0;
+}
+.sign:focus-visible {
+  filter: drop-shadow(0 0 0 2px var(--ink));
+  text-decoration: underline;
+}
+
+/* Page 16: "Move down!" */
+.move-down {
+  align-self: flex-start;
+  margin: 1em 0 0;
+  padding: 0.45em 1.2em 0.5em;
+  border: 1.5px solid var(--ink);
+  border-radius: 26px 18px 24px 15px / 18px 24px 15px 26px;
+  background: rgba(239, 228, 201, 0.85);
+  font-family: var(--font-caps);
+  font-size: max(14px, 3.4cqw);
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  cursor: pointer;
+  transition: rotate 0.3s var(--ease-spring), background 0.2s ease, color 0.2s ease;
+}
+.move-down:hover {
+  rotate: -3deg;
+  background: var(--ink);
+  color: var(--paper);
+}
+.move-down:active {
+  rotate: 4deg;
+}

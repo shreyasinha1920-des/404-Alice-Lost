@@ -1,0 +1,514 @@
+/* ---------- Act 1, The Fall: pages 2 to 6 ---------- */
+
+/* Scenes sit where a plate would, inside the gilt frame. */
+.scene {
+  height: 100%;
+  margin: 0;
+  padding: 10cqh 10cqw 12cqh 12cqw;
+}
+.scene__svg,
+.fall-well,
+.well-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.fall-well,
+.well-frame {
+  border-radius: 2px;
+  outline: 1px solid var(--gilt-line);
+  outline-offset: 6px;
+  box-shadow: 0 0 0 1px rgba(43, 33, 24, 0.45);
+  overflow: hidden;
+}
+.ornament {
+  z-index: 2;
+}
+
+/* Scene animations run only while their page is open. */
+.scene > :not(.is-live) * {
+  animation-play-state: paused;
+}
+
+/* ----- Tenniel plates ----- */
+
+.plate-scene {
+  height: 100%;
+}
+.plate {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  container-type: size;
+}
+.plate__box {
+  position: relative;
+  width: min(100cqw, 100cqh * var(--ar));
+  height: min(100cqh, 100cqw / var(--ar));
+  will-change: translate;
+}
+.plate__img {
+  width: 100%;
+  height: 100%;
+  /* Plate multiplied over parchment and grain: its white paper vanishes, ink and washes remain. */
+  background-image: var(--plate), var(--grain);
+  background-size: 100% 100%, 220px 220px;
+  background-color: var(--paper);
+  background-blend-mode: multiply, normal;
+  /* Feather every edge into the page, like a vignetted plate, so no parchment patch shows. */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+  mask-composite: intersect;
+}
+
+/* ----- Page 2: the frontispiece ----- */
+
+.fp-kicker {
+  font-family: var(--font-caps);
+  font-size: 15px;
+  letter-spacing: 4px;
+  fill: var(--ink-soft);
+}
+.fp-title {
+  font-family: var(--font-story);
+  font-size: 50px;
+  fill: var(--ink);
+}
+.fp-fleuron {
+  font-family: var(--font-story);
+  font-size: 22px;
+  fill: var(--accent);
+}
+.fp-small {
+  font-family: var(--font-story);
+  font-style: italic;
+  font-size: 16px;
+  fill: var(--ink-soft);
+}
+.fp-heart {
+  fill: #e8c25a;
+}
+.fp-stem {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.is-live .fp-stem {
+  animation: fp-draw 3.2s cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+@keyframes fp-draw {
+  from { stroke-dashoffset: 1; }
+}
+.is-live .fp-daisy {
+  animation: fp-bloom 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both, fp-nod 4.2s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * 0.14s), calc(var(--i) * -0.4s);
+}
+@keyframes fp-bloom {
+  from { scale: 0; opacity: 0; }
+}
+@keyframes fp-nod {
+  from { rotate: -9deg; }
+  to { rotate: 9deg; }
+}
+
+/* ----- Page 3: the White Rabbit ----- */
+
+.plate-scene--rabbit.is-arriving .plate__box {
+  animation: wr-arrive 1.3s cubic-bezier(0.16, 0.84, 0.3, 1) both;
+}
+@keyframes wr-arrive {
+  from { opacity: 0; transform: translateX(14%) rotate(2deg); filter: blur(3px); }
+  60% { filter: blur(0); }
+  to { opacity: 1; transform: none; }
+}
+.pw-roundel {
+  position: absolute;
+  top: 3%;
+  right: -2%;
+  width: 30%;
+  aspect-ratio: 140 / 162;
+}
+.pw {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.pw-second {
+  animation: wr-tick 60s steps(60) infinite;
+}
+@keyframes wr-tick {
+  to { rotate: 360deg; }
+}
+.plate-scene--rabbit.is-near .pw {
+  animation: wr-tremble 0.16s ease-in-out infinite alternate;
+}
+@keyframes wr-tremble {
+  from { rotate: -2.5deg; }
+  to { rotate: 2.5deg; }
+}
+
+/* ----- Page 4: down the rabbit hole ----- */
+
+.hole {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+  outline: 1px solid var(--gilt-line);
+  outline-offset: 6px;
+  box-shadow: 0 0 0 1px rgba(43, 33, 24, 0.45), inset 0 0 40px rgba(26, 18, 64, 0.25);
+  cursor: pointer;
+}
+.well {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.hole__rabbit-wrap {
+  position: absolute;
+  width: 34%;
+  pointer-events: none;
+  will-change: transform, left, top;
+}
+.hole__rabbit {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(26, 18, 64, 0.35));
+  will-change: transform, filter;
+}
+.hole__keys {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hole__key {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+}
+.hole__key svg {
+  display: block;
+  width: 100%;
+  filter: drop-shadow(0 0 6px rgba(255, 210, 120, 0.7));
+}
+
+/* The depth gauge: an engraved rule with a gilt marker. */
+.depth {
+  margin: 1.6em 0 0;
+}
+.depth__track {
+  position: relative;
+  height: 2px;
+  margin: 0 0.5em;
+  background: repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 6px);
+  opacity: 0.9;
+}
+.depth__track::before,
+.depth__track::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  width: 1px;
+  height: 12px;
+  background: var(--ink);
+}
+.depth__track::before { left: 0; }
+.depth__track::after { right: 0; }
+.depth__fill {
+  position: absolute;
+  inset: -1px 0;
+  background: linear-gradient(90deg, #c99033, #6b4fc4);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+.depth__marker {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  translate: -50% -52%;
+  font-size: 14px;
+  line-height: 1;
+  color: #c99033;
+  text-shadow: 0 0 6px rgba(255, 210, 120, 0.8);
+}
+.depth__stops {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6em;
+  margin: 0.8em 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-caps);
+  font-size: max(11px, 2.7cqw);
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+.depth__stops li {
+  flex: 1;
+  text-align: center;
+  opacity: 0.55;
+  transition: opacity 0.4s ease, color 0.4s ease, translate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.depth__stops li:first-child { text-align: left; }
+.depth__stops li:last-child { text-align: right; }
+.depth__stops li.is-here {
+  opacity: 1;
+  color: var(--accent);
+  translate: 0 -2px;
+}
+
+.fall-cue {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 1.8em 0 0;
+  font-family: var(--font-story);
+  font-style: italic;
+  font-size: max(14px, 3.6cqw);
+  color: var(--accent);
+  transition: opacity 0.5s ease;
+}
+.fall-cue.is-hidden {
+  opacity: 0;
+}
+.fall-cue__hand {
+  display: inline-block;
+  font-style: normal;
+  font-size: 1.6em;
+  line-height: 1;
+  animation: cue-bob 1.4s ease-in-out infinite;
+}
+@keyframes cue-bob {
+  0%, 100% { translate: 0 -2px; }
+  50% { translate: 0 5px; }
+}
+
+/* ----- Page 5: falling ----- */
+
+.fall-well {
+  position: relative;
+  background: linear-gradient(to bottom, rgba(239, 228, 201, 0.4), rgba(214, 196, 170, 0.6));
+}
+.fall-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.fall-note {
+  margin: 0.4em 0 0.8em;
+  font-size: max(15px, 4cqw);
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.fall-url {
+  font-family: var(--font-story);
+  font-style: italic;
+  color: var(--queen-red);
+  word-break: break-all;
+  padding: 0 0.25em;
+  background: rgba(158, 42, 43, 0.08);
+  border-radius: 3px;
+}
+.fall-miles {
+  margin: 0;
+  font-family: var(--font-caps);
+  font-size: max(13px, 3.4cqw);
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+.fall-miles__n {
+  font-family: var(--font-story);
+  font-size: 1.5em;
+  letter-spacing: 0;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ----- Page 6: the hall of doors ----- */
+
+/* The little door behind the curtain, in plate percentages. */
+.ld-glow {
+  position: absolute;
+  left: 76%;
+  top: 60%;
+  width: 16%;
+  height: 30%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 214, 120, 0.55), rgba(255, 214, 120, 0));
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: ld-glow 3.6s ease-in-out infinite alternate;
+}
+@keyframes ld-glow {
+  from { opacity: 0.35; scale: 0.9; }
+  to { opacity: 1; scale: 1.08; }
+}
+
+.door-row {
+  display: flex;
+  gap: 4cqw;
+  margin: 1.4em 0 0.4em;
+}
+.door {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55em;
+  text-decoration: none;
+  color: var(--ink);
+}
+.door__frame {
+  position: relative;
+  height: 20cqh;
+  aspect-ratio: 0.56;
+  max-width: 100%;
+  perspective: 500px;
+}
+/* Every printed part is the same 120px-square sprite with the door standing in its middle
+   (66 x 115): scaled and offset so the door itself fills the frame. */
+.door__print {
+  position: absolute;
+  left: -41%;
+  top: -1.6%;
+  width: 182%;
+  max-width: none;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+.door__light {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.door__leaf {
+  position: absolute;
+  inset: 0;
+  transform-origin: 12% center;
+  transition: transform 0.65s cubic-bezier(0.5, 0, 0.2, 1);
+}
+.door__web {
+  transform-origin: 50% 5%;
+  animation: door-web 4s ease-in-out infinite alternate;
+}
+@keyframes door-web {
+  from { rotate: -1deg; }
+  to { rotate: 1.5deg; }
+}
+/* The peephole: whatever is inside looks out through it. */
+.door__grille {
+  position: absolute;
+  left: 33%;
+  top: 18%;
+  width: 34%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.door__eyes {
+  position: absolute;
+  left: -22%;
+  top: -22%;
+  width: 144%;
+  height: auto;
+  transform-origin: 50% 50%;
+  animation: door-eyes 5.2s steps(1, end) infinite, door-peer 7s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -1.9s), calc(var(--i, 0) * -2.3s);
+}
+/* Blink now and then. */
+@keyframes door-eyes {
+  0%, 46%, 50%, 54%, 100% { scale: 1 1; }
+  47%, 48%, 55% { scale: 1 0.1; }
+}
+/* Glance about. */
+@keyframes door-peer {
+  0%, 30% { translate: 0 0; }
+  40%, 60% { translate: -14% 0; }
+  70%, 100% { translate: 12% 2%; }
+}
+.door__plaque {
+  padding: 0.1em 0.6em 0.15em;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--font-caps);
+  font-size: max(12px, 3cqw);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  /* hung a little crooked */
+  rotate: calc((var(--i, 0) - 1.5) * 1.6deg);
+  transition: rotate 0.4s cubic-bezier(0.3, 1.8, 0.5, 1);
+}
+.door:hover .door__plaque,
+.door:focus-visible .door__plaque {
+  rotate: calc((var(--i, 0) - 1.5) * -2.6deg);
+}
+/* Hover: the door shudders, creaks ajar onto darkness, and the eyes inside dart away. */
+.door:hover .door__leaf,
+.door:focus-visible .door__leaf {
+  animation: door-rattle 0.45s ease-in-out;
+  transform: rotateY(-22deg);
+}
+.door:hover .door__eyes,
+.door:focus-visible .door__eyes {
+  animation: door-hide 0.5s ease-in forwards;
+}
+@keyframes door-hide {
+  0% { scale: 1 1.4; translate: 0 0; opacity: 1; }
+  30% { scale: 1 1.4; translate: 0 0; opacity: 1; }
+  100% { scale: 1 0.1; translate: 40% 0; opacity: 0; }
+}
+@keyframes door-rattle {
+  20% { translate: -1.5px 0; rotate: -1deg; }
+  40% { translate: 1.5px 0; rotate: 1deg; }
+  60% { translate: -1px 0; rotate: -0.6deg; }
+  80% { translate: 1px 0; rotate: 0.3deg; }
+}
+.door:focus-visible {
+  outline: none;
+}
+.door:focus-visible .door__plaque {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+.door.is-open .door__leaf {
+  transform: rotateY(-78deg);
+}
+.door.is-open .door__light {
+  opacity: 1;
+}
+
+/* ----- Phones ----- */
+
+@media (max-width: 820px) {
+  .scene {
+    padding: 7cqh 8cqw 3cqh;
+  }
+  .door__frame {
+    height: 24cqh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene *,
+  .door,
+  .door * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.fall-tip {
+  margin: 1.2em 0 0;
+  font-style: italic;
+  font-size: max(13px, 3.3cqw);
+  color: var(--accent);
+}
